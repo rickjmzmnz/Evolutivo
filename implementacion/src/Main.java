@@ -4,12 +4,16 @@ import org.moeaframework.problem.tsplib.Tour;
 import gaframework.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.Random;
+import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Ejemplo de como leer los archivos tsp
  */
 public class Main{
 
+    
     public static void main(String[] args) throws IOException{
 	TSPInstance problem = new TSPInstance(new File("data/tsp/ulysses16.tsp"));
 	System.out.println(problem.getName());
@@ -19,6 +23,7 @@ public class Main{
 	for(Tour tour: problem.getTours()){
 	    System.out.println(tour.distance(problem));
 	}
-    }
+	}
+    
 
 }
