@@ -80,7 +80,7 @@ public class MutacionUniforme<G> implements MutationOp<G>{
 		    gen = lista.get(0);
 		    nuevo.setGene(i,gen);
 		} else {
-		    int gr = r.nextInt(tam - 1) + 1;
+		    int gr = r.nextInt(tam);
 		    gen = lista.get(gr);
 		    nuevo.setGene(i,gen);
 		    eliminaGen(lista,gen);
@@ -96,7 +96,7 @@ public class MutacionUniforme<G> implements MutationOp<G>{
 			gen = lista.get(0);
 			nuevo.setGene(i,gen);
 		    } else {
-			int gr = r.nextInt(tam - 1) + 1;
+			int gr = r.nextInt(tam);
 			gen = lista.get(gr);
 			nuevo.setGene(i,gen);
 			eliminaGen(lista,gen);

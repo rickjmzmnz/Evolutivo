@@ -25,6 +25,7 @@ public class Terminacion<G,P> implements TerminationCondition<G,P>{
      * @param p - La población del algoritmo
      * @return - True si se alcanza la condición de termino, False si no
      */
+    @Override
     public boolean conditionReached(Population<G,P> p){
 	return p.getGeneration() >= this.getTerm();
     }

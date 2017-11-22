@@ -23,7 +23,6 @@ public class Main{
 	for(Tour tour: problem.getTours()){
 	    System.out.println(tour.distance(problem));
 	}
-	}
-    
+    }   
 
 }
