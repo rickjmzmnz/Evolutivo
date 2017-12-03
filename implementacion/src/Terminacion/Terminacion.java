@@ -9,7 +9,7 @@ public class Terminacion<G,P> implements TerminationCondition<G,P>{
      * @param term - El numero de terminación
      */
     public Terminacion(int term){
-	this.term = term;
+		this.term = term;
     }
 
     /**
@@ -17,7 +17,7 @@ public class Terminacion<G,P> implements TerminationCondition<G,P>{
      * @return term - La terminación obtenida
      */
     public int getTerm(){
-	return this.term;
+		return this.term;
     }
 
     /**
@@ -27,7 +27,7 @@ public class Terminacion<G,P> implements TerminationCondition<G,P>{
      */
     @Override
     public boolean conditionReached(Population<G,P> p){
-	return p.getGeneration() >= this.getTerm();
+		return p.getGeneration() >= this.getTerm();
     }
 
 }

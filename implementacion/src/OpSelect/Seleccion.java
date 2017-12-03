@@ -9,15 +9,15 @@ import java.util.LinkedList;
 public class Seleccion<G,P> implements SelectionOp<G,P>{
 
     private double totalSeleccion;
-    private Random r;
+    private Random random;
 
     /**
      * Se construye un objeto para poder realizar el operador de cruzamiento
      * @param probCruza - La probabilidad de que suceda el cruzamiento
      */
-    public Seleccion(double totalSeleccion, int semilla){
+    public Seleccion(double totalSeleccion, Random random){
     	this.totalSeleccion = totalSeleccion;
-    	this.r = new Random(semilla);
+    	this.random = random;
     }
 
     public List<Individual<G,P>> select(Population<G,P> p){
@@ -34,7 +34,7 @@ public class Seleccion<G,P> implements SelectionOp<G,P>{
     	LinkedList<Individual<G,P>> l = new LinkedList<>();
     	for(int i = 0; i<totalSeleccion; i++){
     		int j = 0;
-    		double v = r.nextDouble();
+    		double v = random.nextDouble();
     		while(v >= ruleta[j]) j++;
     		l.add(p.getIndividual(j));
     	}

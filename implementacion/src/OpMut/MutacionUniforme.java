@@ -9,13 +9,15 @@ import java.util.ArrayList;
 public class MutacionUniforme<G> implements MutationOp<G>{
 
     private double probMut;
+    private Random random;
 
     /**
      * Se construye un objeto para poder realizar el operador de mutación
      * @param probMut - La probabilidad de que suceda la mutación
      */
-    public MutacionUniforme(double probMut){
-	this.probMut = probMut;
+    public MutacionUniforme(double probMut, Random random){
+		this.probMut = probMut;
+		this.random = random;
     }
 
     /**
@@ -23,7 +25,7 @@ public class MutacionUniforme<G> implements MutationOp<G>{
      * @return probMut - La probabilidad de mutación
      */
     public double getProbMut(){
-	return this.probMut;
+		return this.probMut;
     }
 
     /**
@@ -32,12 +34,12 @@ public class MutacionUniforme<G> implements MutationOp<G>{
      * @return lista - La lista con los genes del genotipo
      */
     public List<G> obtenGenes(Genotype<G> g){
-	List<G> lista = new ArrayList<G>();
-	for(int i=0;i<g.size();i++){
-	    G gen = g.getGene(i);
-	    lista.add(gen);
-	}
-	return lista;
+		List<G> lista = new ArrayList<G>();
+		for(int i=0;i<g.size();i++){
+			G gen = g.getGene(i);
+			lista.add(gen);
+		}
+		return lista;
     }
 
     /**
@@ -46,14 +48,14 @@ public class MutacionUniforme<G> implements MutationOp<G>{
      * @param gen - El gen a eliminar de la lista de genes
      */
     public void eliminaGen(List<G> lista,G gen){
-	G genLista;
-	for(int i=0;i<lista.size();i++){
-	    genLista = lista.get(i);
-	    if(genLista.equals(gen)){
-		lista.remove(i);
-		break;
-	    }
-	}
+		G genLista;
+		for(int i=0;i<lista.size();i++){
+			genLista = lista.get(i);
+			if(genLista.equals(gen)){
+			lista.remove(i);
+			break;
+			}
+		}
     }
 
     /**
@@ -66,45 +68,44 @@ public class MutacionUniforme<G> implements MutationOp<G>{
      */
     @Override
     public Genotype<G> mutate(Genotype<G> g){
-	List<G> lista = obtenGenes(g);
-	Genotype<G> nuevo = new Genotype<G>(g.size());
-	Random r = new Random();
-	G gen;
-	double probabilidad = this.getProbMut();
-	double probCruza;
-	for(int i=0;i<g.size();i++){
-	    probCruza = Math.random();
-	    if(probabilidad > probCruza){
-		int tam = lista.size();
-		if(tam == 1){
-		    gen = lista.get(0);
-		    nuevo.setGene(i,gen);
-		} else {
-		    int gr = r.nextInt(tam);
-		    gen = lista.get(gr);
-		    nuevo.setGene(i,gen);
-		    eliminaGen(lista,gen);
+		List<G> lista = obtenGenes(g);
+		Genotype<G> nuevo = new Genotype<G>(g.size());
+		G gen;
+		double probabilidad = this.getProbMut();
+		double probCruza;
+		for(int i=0;i<g.size();i++){
+			probCruza = random.nextDouble();
+			if(probabilidad > probCruza){
+			int tam = lista.size();
+			if(tam == 1){
+				gen = lista.get(0);
+				nuevo.setGene(i,gen);
+			} else {
+				int gr = random.nextInt(tam);
+				gen = lista.get(gr);
+				nuevo.setGene(i,gen);
+				eliminaGen(lista,gen);
+			}
+			}else{
+			gen = g.getGene(i);
+			if(lista.contains(gen)){
+				nuevo.setGene(i,gen);
+				eliminaGen(lista,gen);
+			} else {
+				int tam = lista.size();
+				if(tam == 1){
+				gen = lista.get(0);
+				nuevo.setGene(i,gen);
+				} else {
+				int gr = random.nextInt(tam);
+				gen = lista.get(gr);
+				nuevo.setGene(i,gen);
+				eliminaGen(lista,gen);
+				}
+			}
+			}
 		}
-	    }else{
-		gen = g.getGene(i);
-		if(lista.contains(gen)){
-		    nuevo.setGene(i,gen);
-		    eliminaGen(lista,gen);
-		} else {
-		    int tam = lista.size();
-		    if(tam == 1){
-			gen = lista.get(0);
-			nuevo.setGene(i,gen);
-		    } else {
-			int gr = r.nextInt(tam);
-			gen = lista.get(gr);
-			nuevo.setGene(i,gen);
-			eliminaGen(lista,gen);
-		    }
-		}
-	    }
-	}
-	return nuevo;
+		return nuevo;
     }
 
     /**
@@ -114,17 +115,18 @@ public class MutacionUniforme<G> implements MutationOp<G>{
      * Al final se muestra el genotipo original y el mutado
      */
     public static void main(String[] args){
-	MutacionUniforme<Integer> mu = new MutacionUniforme<>(0.5);
-	Genotype<Integer> g = new Genotype<Integer>(6);
-	Genotype<Integer> nuevo = new Genotype<Integer>(6);
-	int n = 1;
-	for(int i=0;i<g.size();i++){
-	    g.setGene(i,n);
-	    n++;
-	}
-	System.out.println("Genotipo original = " + g.toString());
-	nuevo = mu.mutate(g);
-	System.out.println("Genotipo mutado = " + nuevo.toString());
+		Random r = new Random();
+		MutacionUniforme<Integer> mu = new MutacionUniforme<>(0.5,r);
+		Genotype<Integer> g = new Genotype<Integer>(6);
+		Genotype<Integer> nuevo = new Genotype<Integer>(6);
+		int n = 1;
+		for(int i=0;i<g.size();i++){
+			g.setGene(i,n);
+			n++;
+		}
+		System.out.println("Genotipo original = " + g.toString());
+		nuevo = mu.mutate(g);
+		System.out.println("Genotipo mutado = " + nuevo.toString());
     }
     
 }

@@ -9,13 +9,15 @@ import java.util.ArrayList;
 public class Codificacion implements Codification<String,Integer>{
 
     private int tam;
+    private Random random;
 
     /**
      * Se construye un objeto con el tamaño del nuevo genotipo o fenotipo
      * @param tam - el tamaño del nuevo genotipo a decodificar o fenotipo a codificar
      */
-    public Codificacion(int tam){
-	this.tam = tam;
+    public Codificacion(int tam, Random random){
+		this.tam = tam;
+		this.random = random; 
     }
 
     /**
@@ -43,13 +45,13 @@ public class Codificacion implements Codification<String,Integer>{
      */
     @Override
     public Phenotype<Integer> decode(Genotype<String> genotype){
-	Phenotype<Integer> phen = new Phenotype<Integer>(this.tam);
-	for(int i=0;i<this.tam;i++){
-	    String s = genotype.getGene(i);
-	    int n = Integer.parseInt(s,2);
-	    phen.setAllele(i,n);
-	}
-	return phen;
+		Phenotype<Integer> phen = new Phenotype<Integer>(this.tam);
+		for(int i=0;i<this.tam;i++){
+			String s = genotype.getGene(i);
+			int n = Integer.parseInt(s,2);
+			phen.setAllele(i,n);
+		}
+		return phen;
     }
 
     /**
@@ -60,29 +62,28 @@ public class Codificacion implements Codification<String,Integer>{
      */
     @Override
     public Genotype<String> newRandomGenotype(){
-	Random r = new Random();
-	List<Integer> lista = new ArrayList<Integer>();
-	Genotype<String> gen = new Genotype<String>(this.tam);
-	int g;
-	String s;
-	for(int i=1;i<this.tam+1;i++){
-	    lista.add(i);
-	}
-	for(int i=0;i<this.tam;i++){
-	    int tamList = lista.size();
-	    if(tamList == 1){
-		g = lista.get(0);
-		s = Integer.toBinaryString(g);
-		gen.setGene(i,s);
-	    }else{
-		int gr = r.nextInt(tamList);
-		g = lista.get(gr);
-		s = Integer.toBinaryString(g);
-		gen.setGene(i,s);
-		lista.remove(new Integer(g));
-	    }
-	}
-	return gen;
+		List<Integer> lista = new ArrayList<Integer>();
+		Genotype<String> gen = new Genotype<String>(this.tam);
+		int g;
+		String s;
+		for(int i=1;i<this.tam+1;i++){
+			lista.add(i);
+		}
+		for(int i=0;i<this.tam;i++){
+			int tamList = lista.size();
+			if(tamList == 1){
+			g = lista.get(0);
+			s = Integer.toBinaryString(g);
+			gen.setGene(i,s);
+			}else{
+			int gr = random.nextInt(tamList);
+			g = lista.get(gr);
+			s = Integer.toBinaryString(g);
+			gen.setGene(i,s);
+			lista.remove(new Integer(g));
+			}
+		}
+		return gen;
     }
 
     /**
@@ -92,13 +93,14 @@ public class Codificacion implements Codification<String,Integer>{
      * Se codifica el fenotipo generado anteriormente 
      */
     public static void main(String[] args){
-	Codificacion c = new Codificacion(10);
-	Genotype<String> gen = c.newRandomGenotype();
-	System.out.println("Genotipo generado aleatoriamente = " + gen.toString());
-	Phenotype<Integer> phen = c.decode(gen);
-	System.out.println("El genotipo se decodificó a = " + phen.toString());
-	gen = c.encode(phen);
-	System.out.println("El fenotipo se codificó a = " + gen.toString());
+		Random r = new Random();
+		Codificacion c = new Codificacion(10,r);
+		Genotype<String> gen = c.newRandomGenotype();
+		System.out.println("Genotipo generado aleatoriamente = " + gen.toString());
+		Phenotype<Integer> phen = c.decode(gen);
+		System.out.println("El genotipo se decodificó a = " + phen.toString());
+		gen = c.encode(phen);
+		System.out.println("El fenotipo se codificó a = " + gen.toString());
     }
     
 }

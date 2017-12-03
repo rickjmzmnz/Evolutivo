@@ -9,6 +9,7 @@ public class Simple<G,P> implements GeneticAlgorithm<G,P> {
     private MutationOp<G> mutationOp;
     private SelectionOp<G,P> selectionOp;
     private TerminationCondition<G,P> termination;
+    private FitnessFunction<P> fun;
     private final int popSize;
 
     public Simple(Codification<G,P> cod,
@@ -20,6 +21,7 @@ public class Simple<G,P> implements GeneticAlgorithm<G,P> {
 		  TerminationCondition<G,P> ter,
 		  int popSize){
 		this.breeder = new Breeder<>(cod, cor, fun);
+		this.fun = fun;
 		this.crossoverOp = cro;
 		this.mutationOp = muo;
 		this.selectionOp = seo;
@@ -30,6 +32,7 @@ public class Simple<G,P> implements GeneticAlgorithm<G,P> {
     public Population<G,P> iteration(Population<G,P> current) {
 		Population<G,P> out = new Population<>(current.getGeneration() + 1);
 		out.addIndividual(current.getWorstIndividual());
+		//elitismo
 		out.addIndividual(current.getBestIndividual());
 		while (out.size() < current.size()) {
 			// Seleccion
@@ -56,7 +59,6 @@ public class Simple<G,P> implements GeneticAlgorithm<G,P> {
 			p = iteration(p);
 			System.out.println(p.getBestIndividual());
 			System.out.println(p.getGeneration());
-			System.out.println(p.size());
 		}
     }
 
