@@ -14,9 +14,9 @@ import java.util.ArrayList;
 public class Main{
 
     public static void main(String[] args) throws IOException{
-    	String instancia = "gr24";
-    	double tasaCruzamiento = 0.9;
-    	double tasaMutacion = 0.5;
+    	String instancia = "ulysses16";
+    	double tasaCruzamiento = 0.1;
+    	double tasaMutacion = 0.1;
     	int semilla = 100;
     	int totalSeleccion = 2;
     	int maxIteracion = 1000;
@@ -24,11 +24,14 @@ public class Main{
 		TSPInstance problem = new TSPInstance(new File(String.format("data/tsp/%s.tsp",instancia)));
 		System.out.println(problem.getName());
 		System.out.println(problem.getDimension());
+		double max = 100000;
+		double min = 0;
 		try{
 			problem.addTour(new File(String.format("data/tsp/%s.opt.tour",instancia)));
 			for(Tour tour: problem.getTours()){
 				System.out.println(tour);
-				System.out.println(tour.distance(problem));
+				min = tour.distance(problem);
+				System.out.println(min);
 			}
 		}catch(Exception e){
 		}
@@ -39,7 +42,7 @@ public class Main{
 		Seleccion<String,Integer> sel = new Seleccion<>(totalSeleccion,random);
 		Funcion f = new Funcion(problem);
 		Terminacion<String,Integer> t = new Terminacion<>(maxIteracion);
-		Simple<String,Integer> ags = new Simple<String,Integer>(cd,null,cp,mu,sel,f,t,popSize);
+		Simple<String,Integer> ags = new Simple<String,Integer>(cd,null,cp,mu,sel,f,t,popSize,max,min);
 		ags.run();
 	}
 }

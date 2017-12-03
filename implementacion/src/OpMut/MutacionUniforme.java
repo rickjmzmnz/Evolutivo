@@ -75,34 +75,34 @@ public class MutacionUniforme<G> implements MutationOp<G>{
 		double probCruza;
 		for(int i=0;i<g.size();i++){
 			probCruza = random.nextDouble();
-			if(probabilidad > probCruza){
-			int tam = lista.size();
-			if(tam == 1){
-				gen = lista.get(0);
-				nuevo.setGene(i,gen);
-			} else {
-				int gr = random.nextInt(tam);
-				gen = lista.get(gr);
-				nuevo.setGene(i,gen);
-				eliminaGen(lista,gen);
-			}
-			}else{
-			gen = g.getGene(i);
-			if(lista.contains(gen)){
-				nuevo.setGene(i,gen);
-				eliminaGen(lista,gen);
-			} else {
+			if(probabilidad >= probCruza){
 				int tam = lista.size();
 				if(tam == 1){
-				gen = lista.get(0);
-				nuevo.setGene(i,gen);
+					gen = lista.get(0);
+					nuevo.setGene(i,gen);
 				} else {
-				int gr = random.nextInt(tam);
-				gen = lista.get(gr);
-				nuevo.setGene(i,gen);
-				eliminaGen(lista,gen);
+					int gr = random.nextInt(tam);
+					gen = lista.get(gr);
+					nuevo.setGene(i,gen);
+					eliminaGen(lista,gen);
 				}
-			}
+			}else{
+				gen = g.getGene(i);
+				if(lista.contains(gen)){
+					nuevo.setGene(i,gen);
+					eliminaGen(lista,gen);
+				} else {
+					int tam = lista.size();
+					if(tam == 1){
+						gen = lista.get(0);
+						nuevo.setGene(i,gen);
+					} else {
+						int gr = random.nextInt(tam);
+						gen = lista.get(gr);
+						nuevo.setGene(i,gen);
+						eliminaGen(lista,gen);
+					}
+				}
 			}
 		}
 		return nuevo;

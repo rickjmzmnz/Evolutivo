@@ -46,7 +46,7 @@ public class CruzamientoUniformeOrdenado<G> implements CrossoverOp<G>{
 		if(!lista.isEmpty() && lista.size() > 1){
 			Genotype<G> gen1 = lista.get(0);
 			Genotype<G> gen2 = lista.get(1);
-			if(probabilidad <= probCruza){		
+			if(probabilidad >= probCruza){		
 				int tam = gen1.size();
 				Genotype<G> h = new Genotype<>(tam);
 				Genotype<G> f = new Genotype<>(tam);
@@ -127,24 +127,25 @@ public class CruzamientoUniformeOrdenado<G> implements CrossoverOp<G>{
 		for(int i=0;i<tam;i++){
 			g1 = gen1.getGene(i);
 			if(g1 != null){
-			for(int j=0;j<tam;j++){
-				g2 = gen2.getGene(j);
-				if(g1.equals(g2)){
-				if(k >= n){
-					if(lista.size() == 0){
-					lista.add(0,g1);
+				for(int j=0;j<tam;j++){
+					g2 = gen2.getGene(j);
+					if(g1.equals(g2)){
+						if(k >= n){
+							if(lista.size() == 0){
+								lista.add(0,g1);
+							} else {
+								lista.add(lista.size(),g1);
+							}
+						}else{
+							lista.add(0,g1);
+						}
 					} else {
-					lista.add(lista.size(),g1);
+						k++;
 					}
-				}else{
-					lista.add(0,g1);
+					
 				}
-				} else {
-				k++;
-				}
-			}
-			n = k;
-			k = 0;
+				n = k;
+				k = 0;
 			}
 		}
 		return lista;
