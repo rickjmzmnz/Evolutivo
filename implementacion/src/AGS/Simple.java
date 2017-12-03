@@ -29,6 +29,8 @@ public class Simple<G,P> implements GeneticAlgorithm<G,P> {
 
     public Population<G,P> iteration(Population<G,P> current) {
 		Population<G,P> out = new Population<>(current.getGeneration() + 1);
+		out.addIndividual(current.getWorstIndividual());
+		out.addIndividual(current.getBestIndividual());
 		while (out.size() < current.size()) {
 			// Seleccion
 			List<Individual<G,P>> selectionList = selectionOp.select(current);
@@ -53,6 +55,8 @@ public class Simple<G,P> implements GeneticAlgorithm<G,P> {
 		while(!termination.conditionReached(p)){
 			p = iteration(p);
 			System.out.println(p.getBestIndividual());
+			System.out.println(p.getGeneration());
+			System.out.println(p.size());
 		}
     }
 

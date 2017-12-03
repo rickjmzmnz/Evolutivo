@@ -2,6 +2,7 @@ import gaframework.*;
 import java.util.Random;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 /**
  * Implementacion de la operacion Cruzamiento de un punto
@@ -36,27 +37,31 @@ public class CruzamientoUniformeOrdenado<G> implements CrossoverOp<G>{
      */
     @Override
     public List<Genotype<G>> crossover(List<Genotype<G>> lista){
-	List<G> listaGenes;
-	Random random = new Random();
-	double probCruza = Math.random();
-	double probabilidad = this.getProbCruza();
-        if(!lista.isEmpty() && lista.size() > 1){
-	    if(probabilidad > probCruza){
-		Genotype<G> gen1 = lista.get(0);
-		Genotype<G> gen2 = lista.get(1);
-		int tam = gen1.size();
-		Genotype<G> h = new Genotype<>(tam);
-		Genotype<G> f = new Genotype<>(tam);
-		Genotype<G> h2 = new Genotype<>(tam);
-		Genotype<G> f2 = new Genotype<>(tam);
-		Genotype<Integer> mascara = new Genotype<>(tam);
-		h = generaCruze(gen1,gen2,h,f,mascara);
-		h2 = generaCruze(gen2,gen1,h2,f2,mascara);
-		lista.add(h);
-		lista.add(h2);
-	    }
-	}
-	return lista;
+		List<Genotype<G>> nueva = new LinkedList<>();
+		List<G> listaGenes;
+		Random random = new Random();
+		double probCruza = Math.random();
+		double probabilidad = this.getProbCruza();
+		if(!lista.isEmpty() && lista.size() > 1){
+			Genotype<G> gen1 = lista.get(0);
+			Genotype<G> gen2 = lista.get(1);
+			if(probabilidad <= probCruza){		
+				int tam = gen1.size();
+				Genotype<G> h = new Genotype<>(tam);
+				Genotype<G> f = new Genotype<>(tam);
+				Genotype<G> h2 = new Genotype<>(tam);
+				Genotype<G> f2 = new Genotype<>(tam);
+				Genotype<Integer> mascara = new Genotype<>(tam);
+				h = generaCruze(gen1,gen2,h,f,mascara);
+				h2 = generaCruze(gen2,gen1,h2,f2,mascara);
+				nueva.add(h);
+				nueva.add(h2);
+			}else{
+				nueva.add(gen1);
+				nueva.add(gen2);
+			}
+		}
+		return lista;
     }
 
     /*
@@ -70,7 +75,6 @@ public class CruzamientoUniformeOrdenado<G> implements CrossoverOp<G>{
 	    int bin = random.nextInt(2);
 	    mascara.setGene(i,bin);
 	}
-	System.out.println(mascara.toString());
 	int faltan = 0;
 	for(int i=0;i<tam;i++){
 	    int genMas = mascara.getGene(i);
@@ -115,8 +119,6 @@ public class CruzamientoUniformeOrdenado<G> implements CrossoverOp<G>{
 	List<G> lista = new ArrayList<G>();
 	List<G> listGen1 = obtenGenes(gen1);
 	List<G> listGen2 = obtenGenes(gen2);
-	System.out.println(listGen1.toString());
-	System.out.println(listGen2.toString());
 	int tam = gen1.size();
 	int n = 0;
 	int k = 0;

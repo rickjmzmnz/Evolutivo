@@ -14,20 +14,27 @@ import java.util.ArrayList;
 public class Main{
 
     public static void main(String[] args) throws IOException{
-		TSPInstance problem = new TSPInstance(new File("data/tsp/ulysses16.tsp"));
+    	String instancia = "ulysses16";
+    	double tasaCruzamiento = 0.9;
+    	double tasaMutacion = 0.4;
+    	int semilla = 10;
+    	int totalSeleccion = 2;
+    	int maxIteracion = 200;
+    	int popSize = 200;
+		TSPInstance problem = new TSPInstance(new File(String.format("data/tsp/%s.tsp",instancia)));
 		System.out.println(problem.getName());
 		System.out.println(problem.getDimension());
-		problem.addTour(new File("data/tsp/ulysses16.opt.tour"));
+		problem.addTour(new File(String.format("data/tsp/%s.opt.tour",instancia)));
 		for(Tour tour: problem.getTours()){
+			System.out.println(tour);
 			System.out.println(tour.distance(problem));
 		}
-		Codificacion cd = new Codificacion(16);
-		CruzamientoUniformeOrdenado<String> cp = new CruzamientoUniformeOrdenado<>(0.9);
-		MutacionUniforme<String> mu = new MutacionUniforme<>(0.5);
-		Seleccion<String,Integer> sel = new Seleccion<>(8,100);
+		Codificacion cd = new Codificacion(problem.getDimension());
+		CruzamientoUniformeOrdenado<String> cp = new CruzamientoUniformeOrdenado<>(tasaCruzamiento);
+		MutacionUniforme<String> mu = new MutacionUniforme<>(tasaMutacion);
+		Seleccion<String,Integer> sel = new Seleccion<>(totalSeleccion,semilla);
 		Funcion f = new Funcion(problem);
-		Terminacion<String,Integer> t = new Terminacion<>(100);
-		int popSize = 1000;
+		Terminacion<String,Integer> t = new Terminacion<>(maxIteracion);
 		Simple<String,Integer> ags = new Simple<String,Integer>(cd,null,cp,mu,sel,f,t,popSize);
 		ags.run();
 	}

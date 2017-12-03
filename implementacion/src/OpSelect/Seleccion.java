@@ -35,7 +35,7 @@ public class Seleccion<G,P> implements SelectionOp<G,P>{
     	for(int i = 0; i<totalSeleccion; i++){
     		int j = 0;
     		double v = r.nextDouble();
-    		while(v < ruleta[j]) j++;
+    		while(v >= ruleta[j]) j++;
     		l.add(p.getIndividual(j));
     	}
     	return l;
